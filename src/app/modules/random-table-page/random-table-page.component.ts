@@ -2,9 +2,11 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppTable } from 'src/app/components/table/table.interface';
-import { randomData } from './random-data';
+import { randomData } from '../random-data';
+import { RandomDataService } from '../random-data.service';
 
 export interface RandomData {
+  id: number;
   productName: string;
   stockIn: number;
   stockOut: number;
@@ -20,6 +22,8 @@ export interface RandomData {
 export class RandomTablePageComponent implements OnInit {
 
   table: AppTable<RandomData>;
+
+  constructor(private randomDataService: RandomDataService) {}
 
   ngOnInit(): void {
     this.table = {
@@ -47,11 +51,14 @@ export class RandomTablePageComponent implements OnInit {
       }]
     };
 
+    this.randomDataService.getRandomData().subscribe((data) => {
+      this.table.rows =
+      data.map(row => ({
+          ...row,
+      }));
+    });
 
-    this.table.rows =
-      randomData.map(row => ({
-        ...row,
-    }));
+    this.randomDataService.updateRandomData({...randomData[0], stockOut: 8});
   }
 }
 
