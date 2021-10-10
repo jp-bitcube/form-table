@@ -7,8 +7,8 @@ import { MatTableModule } from '@angular/material/table';
 @NgModule({
   declarations: [TableComponent],
   imports: [
-    ReactiveFormsModule,
     CommonModule,
+    ReactiveFormsModule,
     MatTableModule
   ],
   exports: [
