@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RandomData } from './random-table-page/random-table-page.component';
 import { randomData } from './random-data';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 
 export interface ShowSuccessErrorOptions {

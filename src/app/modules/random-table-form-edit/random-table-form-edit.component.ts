@@ -1,7 +1,7 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { AppTable } from 'src/app/components/table/table.interface';
-import { randomData } from '../random-data';
+import { AppTable, AppTableRow } from 'src/app/components/table/table.interface';
 import { RandomDataService } from '../random-data.service';
 import { RandomData } from '../random-table-page/random-table-page.component';
 
@@ -15,7 +15,10 @@ export class RandomTableFormEditComponent implements OnInit {
   stockOut: FormControl;
 
 
-  constructor(private randomDataService: RandomDataService) { }
+  constructor(
+    private location: Location,
+    private randomDataService: RandomDataService
+    ) { }
 
   ngOnInit(): void {
     this.table = {
@@ -59,5 +62,34 @@ export class RandomTableFormEditComponent implements OnInit {
           ...row,
       }));
     });
+  }
+
+  onSavedChanges(event: AppTableRow<RandomData>[]): void {
+    const result = Object.keys(event).map((key, index) => {
+      const splitKey = key.split('_');
+      const valueKey = splitKey[0];
+      const idKey = splitKey[1];
+      return {
+        ...this.table.rows[index],
+        id: +idKey,
+        [valueKey]: event[key]
+      };
+    }) as RandomData[];
+
+    this.joinObject(result).forEach((r) => this.randomDataService.updateRandomData(r));
+    this.location.back();
+  }
+
+  joinObject(result: RandomData[]): RandomData[] {
+    return result.reduce((acc: RandomData[], val: RandomData, ind: number) => {
+       const index = acc.findIndex(el => el.id === val.id);
+       if (index !== -1) {
+          const key = Object.keys(val)[1];
+          acc[index][key] = val[key];
+       } else {
+          acc.push(val);
+       }
+       return acc;
+    }, []);
   }
 }

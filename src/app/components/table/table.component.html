@@ -1,3 +1,7 @@
+<div class="width-80" fxLayoutAlign="end" fxLayoutGap="10px" *ngIf="form && options?.tableType?.includes('Edit')">
+  <button mat-button color="secondary" [routerLink]="['/']">Go Back</button>
+  <button mat-button color="primary" (click)="onSaveClick()">Save</button>
+</div>
 <table mat-table [dataSource]="dataSource">
   <ng-container *ngIf="!options?.tableType">
     <div [matColumnDef]="header.key" *ngFor="let header of options?.headers">
@@ -42,7 +46,6 @@
       </div>
     </div>
   </form>
-
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>

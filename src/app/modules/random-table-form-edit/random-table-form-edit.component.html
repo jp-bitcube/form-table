@@ -1,11 +1,7 @@
 <mat-card fxFlex fxLayout="column" fxLayoutAlign="center center">
-  <div class="width-percent-80" fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+  <div class="width-80" fxFlex fxLayout="row" fxLayoutAlign="space-between center">
     <h1>Random Table Edit</h1>
-    <div fxLayoutGap="10px">
-      <button mat-button color="secondary" [routerLink]="['/']">Go Back</button>
-      <button mat-button color="primary">Save</button>
-    </div>
   </div>
 
-  <app-table [options]="table"></app-table>
+  <app-table [options]="table" (savedChanges)="onSavedChanges($event)"></app-table>
 </mat-card>

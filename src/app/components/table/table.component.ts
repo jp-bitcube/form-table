@@ -18,6 +18,8 @@ export class TableComponent<T> implements OnInit {
   dataSource: MatTableDataSource<unknown>;
   displayedColumns: string[];
 
+  @Output() savedChanges = new EventEmitter<AppTableRow<T>[]>();
+
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
@@ -50,5 +52,13 @@ export class TableComponent<T> implements OnInit {
 
   getValue(header: AppTableHeader<T>, row: AppTableRow<T>): string | number | Date {
     return header.get ? header.get(row) : row[header.key];
+  }
+
+  onSaveClick(): void {
+    if (this.form.invalid) {
+      return;
+    }
+    const result = this.form.value;
+    this.savedChanges.emit(result);
   }
 }
